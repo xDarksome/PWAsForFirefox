@@ -12,8 +12,7 @@ license = "MPL-2.0"
 edition = "2018"
 publish = false
 
-# Version will be set by CI from the Git tag when building and releasing
-version = "0.0.0"
+version = "2.0.3"
 
 [profile.release]
 codegen-units = 1
