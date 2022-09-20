@@ -74,7 +74,7 @@ impl Runtime {
         // Runtime is currently installed to a user-specific location along with other project files
         // If you want to overwrite locations of all project files, check `directories.rs`
         // If you want to overwrite only runtime location, replace the below line
-        let directory = dirs.userdata.join("runtime");
+        let directory = dirs.runtime.clone();
 
         let executable = {
             cfg_if! {

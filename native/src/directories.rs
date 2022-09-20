@@ -78,8 +78,8 @@ pub struct ProjectDirs {
 
     /// User-specific directory for the project data.
     ///
-    /// Stores the internal Firefox instance, profile directories with user data,
-    /// web app icons (on Windows), as well as the configuration and log files.
+    /// Stores profile directories with user data, web app icons (on Windows), as well as the
+    /// configuration and log files.
     ///
     /// Can be overwritten by a `FFPWA_USERDATA` build- or run-time environment variable.
     ///
@@ -93,6 +93,19 @@ pub struct ProjectDirs {
     /// - Write
     ///
     pub userdata: PathBuf,
+
+    /// Directory to store the internal Firefox instance.
+    ///
+    /// Can be overwritten by a `FFPWA_USERDATA` build- or run-time environment variable.
+    ///
+    /// ## Default value
+    /// [`ProjectDirs::userdata`] + `/runtime`
+    ///
+    /// ## Required permissions
+    /// - Read
+    /// - Write
+    ///
+    pub runtime: PathBuf,
 }
 
 impl ProjectDirs {
@@ -172,6 +185,12 @@ impl ProjectDirs {
             }
         };
 
+        let mut runtime = if let Some(envvar) = option_env!("FFPWA_RUNTIME") {
+            expand_tilde(envvar, base.home_dir())
+        } else {
+            userdata.join("runtime")
+        };
+
         // If you want to overwrite default install locations, use build-time environment variables
         // See the struct fields comments for description about each directory
 
@@ -183,10 +202,11 @@ impl ProjectDirs {
             set_path_from_env!(executables, "FFPWA_EXECUTABLES", base);
             set_path_from_env!(sysdata, "FFPWA_SYSDATA", base);
             set_path_from_env!(userdata, "FFPWA_USERDATA", base);
+            set_path_from_env!(runtime, "FFPWA_RUNTIME", base);
         }
 
         create_dir_all(&userdata).context("Failed to create user data directory")?;
 
-        Ok(Self { executables, sysdata, userdata })
+        Ok(Self { executables, sysdata, userdata, runtime })
     }
 }
