@@ -12,10 +12,7 @@ use url::Url;
 use crate::components::runtime::Runtime;
 use crate::components::site::{Site, SiteConfig};
 use crate::console::app::{
-    SiteInstallCommand,
-    SiteLaunchCommand,
-    SiteUninstallCommand,
-    SiteUpdateCommand,
+    SiteInstallCommand, SiteLaunchCommand, SiteUninstallCommand, SiteUpdateCommand,
 };
 use crate::console::{store_value, store_value_vec, Run};
 use crate::directories::ProjectDirs;
@@ -77,7 +74,7 @@ impl Run for SiteLaunchCommand {
         };
 
         if should_patch {
-            runtime.patch(&dirs, site)?;
+            // runtime.patch(&dirs, site)?;
             profile.patch(&dirs)?;
         }
 
